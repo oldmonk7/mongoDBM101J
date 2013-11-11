@@ -1,0 +1,20 @@
+
+
+HW 5.1
+————————
+db.posts.aggregate([{$project:{_id:0,comments:1}},{$unwind:"$comments"},{$group:{_id:"$comments.author",num_com:{$sum:1}}},{$sort:{num_com:1}}])
+
+HW 5.2
+——————
+db.zips.aggregate([{$match:{$or:[{state:'NY'},{state:'CA'}]}},{$group:{_id:"$city", tot:{$sum:"$pop"}}},{$match:{tot:{$gt:25000}}},{$sort:{tot:-1}},{$group:{_id:null, avg: {$avg:"$tot"}}}])
+
+
+
+
+HW 5.3
+——————
+db.marks.aggregate([{$group:{_id:"$class_id", scores:{$push:"$scores"} }},{$unwind:"$scores"},{$unwind:"$scores"},{$match:{$or:[{"scores.type":"homework"},{"scores.type":"exam"}]}},{$group:{_id:"$_id",avg:{$avg:"$scores.score"}}},{$sort:{avg:1}}])
+
+HW 5.4
+——————
+db.zips.aggregate([{$match:{city:{$regex:/^[0-9]/}}},{$group:{_id:null, sum:{$sum:"$pop"}}}])
